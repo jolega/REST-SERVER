@@ -10,25 +10,51 @@ class Server {
         this.app = express()
         this.port = process.env.PORT
 
-        //Middlewares
+        //middlewares
 
         this.middlewares();
 
-        // Rutas de mi app
+        // routes de mi app
         this.routes();
     }
 
     middlewares(){
 
-    // Directorio publico
+    // directory public
     this.app.use( express.static('public') )
 
     }
 
     routes() {
 
-        this.app.get('/', (req, res) => {
-            res.send('Hello World')
+        this.app.get('/api', (req, res) => {
+            res.json({
+                msg: 'get API'
+            });
+          }) ;
+
+        this.app.put('/api', (req, res) => {
+            res.json({
+                msg: 'put API'
+            });
+          }) ;
+          
+        this.app.post('/api', (req, res) => {
+            res.json({
+                msg: 'post API'
+            });
+          }) ;
+
+        this.app.delete('/api', (req, res) => {
+            res.json({
+                msg: 'delete API'
+            });
+          }) ;
+
+        this.app.patch('/api', (req, res) => {
+            res.json({
+                msg: 'patch API'
+            });
           }) ;
           
 
