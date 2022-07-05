@@ -29,3 +29,7 @@ json
 
 # example pur 
 http://localhost:8080/api/users/1
+
+# heroku
+
+https://rest-server-node-js-jolega.herokuapp.com/
