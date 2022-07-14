@@ -10,6 +10,8 @@ nodemon app
 
 http://localhost:8080/api/users
 
+https://rest-server-node-js-jolega.herokuapp.com/api/users/
+
 
 
 # example get
