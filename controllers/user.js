@@ -1,5 +1,5 @@
 const { response } = require('express')
-
+const  User  = require ('../models/user');
 
 
 const userGet = (req, res = response) => {
@@ -19,24 +19,23 @@ const userGet = (req, res = response) => {
   const userPut = (req, res = response) => {
 
     const id = req.params.id
-    const {name, years} = req.body;
+    const body = req.body;
 
     res.json({
         msg: 'put API - controller ',
-        id,
-        name,
-        years
+        body
     });
   }
   
-const userPost = ( req, res = response) => {
+const userPost = async ( req, res = response) => {
 
-    const {name, years} = req.body;
+    const body = req.body;
+    const user = new User( body ); // create instance
+    user.save(); // save in mongo
 
     res.status(201).json({
         msg: 'post API - controller',
-        name,
-        years,
+        user
     });
   }
 
