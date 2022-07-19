@@ -1,5 +1,6 @@
 const { response } = require('express')
 const  User  = require ('../models/user');
+const  bcryptjs = require('bcryptjs');
 
 
 const userGet = (req, res = response) => {
@@ -18,6 +19,7 @@ const userGet = (req, res = response) => {
 
   const userPut = (req, res = response) => {
 
+
     const id = req.params.id
     const body = req.body;
 
@@ -29,8 +31,19 @@ const userGet = (req, res = response) => {
   
 const userPost = async ( req, res = response) => {
 
-    const body = req.body;
-    const user = new User( body ); // create instance
+
+   // const { google, ...rest } = req.body; // exclude fields 
+   const { name, email, password, role } = req.body;
+   const user = new User({ name, email, password, role} );
+
+    // validate email
+
+    // encrypt password 
+    const salt = bcryptjs.genSaltSync();
+    user.password = bcryptjs.hashSync( password , salt )
+
+ //   const body = req.body;
+//    const user = new User( body ); // create instance
     user.save(); // save in mongo
 
     res.status(201).json({
