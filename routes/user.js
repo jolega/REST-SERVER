@@ -9,7 +9,7 @@ const {userGet,
 
 const router = Router ()
 const { validateFields } = require('../middlewares/validate-fields');
-const Role = require('../models/role');
+const { isRoleValid }    = require('../helpers/db-validators')
 
 
 router.get('/', userGet ) ;
@@ -21,13 +21,7 @@ router.post('/', [
   check('password', 'the password is not valid minimum 6 letters ').isLength({ min: 6 }).not().isEmpty() ,
   check('email', 'the email is not valid').isEmail()  ,
   //check('role', 'the role is not valid').isIn(['ADMIN_ROLE','USER_ROLE']),
-  check('role').custom( async (role = '') => {
-    const  existsRole = await Role.findOne({ role }) ;
-    if( !existsRole ) {
-       throw new Error(`the rol ${ rol } not register form base date `) 
-    }
-
-  }),
+  check('role').custom( isRoleValid ), // ((role) => esRoleValido ( rol ))
   validateFields
 ], userPost ) ;
 
