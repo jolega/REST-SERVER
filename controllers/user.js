@@ -1,7 +1,8 @@
 const { response } = require('express')
 const  User  = require ('../models/user');
 const  bcryptjs = require('bcryptjs');
-const { validationResult } = require('express-validator')
+const { validateFields} = require('../middlewares/validate-fields')
+
 
 
 const userGet = (req, res = response) => {
@@ -32,11 +33,8 @@ const userGet = (req, res = response) => {
   
 const userPost = async ( req, res = response) => {
 
-   const  errors = validationResult(req);
 
-   if(!errors.isEmpty()){
-    return res.status(400).json(errors);
-   }
+
 
    // const { google, ...rest } = req.body; // exclude fields 
    const { name, email, password, role } = req.body;
