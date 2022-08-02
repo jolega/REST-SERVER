@@ -35,6 +35,7 @@ const UserSchema = Schema ({
 
 })
 
+// change the name of the request response, hidden id and password
 UserSchema.methods.toJSON = function () {
     const { __v, password, ...users } = this.toObject();
     return users;

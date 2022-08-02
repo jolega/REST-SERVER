@@ -39,16 +39,6 @@ const userPost = async ( req, res = response) => {
    // const { google, ...rest } = req.body; // exclude fields 
    const { name, email, password, role } = req.body;
    const user = new User({ name, email, password, role} );
-
-    // validate email witch  express-validator
-
-    const existsEmail = await User.findOne( { email })
-
-    if ( existsEmail ) {
-      return res.status(400).json({
-        msg: 'the email, already registered' 
-      });
-    }
  
     // encrypt password  with  bcryptjs
     const salt = bcryptjs.genSaltSync();
