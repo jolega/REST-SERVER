@@ -9,12 +9,17 @@ const {userGet,
 
 const router = Router ()
 const { validateFields } = require('../middlewares/validate-fields');
-const { isRoleValid, isEmailValid }    = require('../helpers/db-validators')
+const { isRoleValid, isEmailValid, existUserForId }    = require('../helpers/db-validators')
 
 
 router.get('/', userGet ) ;
 
-router.put('/:id', userPut ) ;
+router.put('/:id', [
+    check('id','Not is a Id validate ').isMongoId(),
+    check('id').custom( existUserForId ),
+    check('role').custom( isRoleValid ),
+    validateFields
+], userPut ) ;
 
 router.post('/', [ 
   check('name', 'the name is not valid').not().isEmpty() ,
