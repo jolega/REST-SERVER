@@ -6,16 +6,18 @@ const user = require('../models/user');
 
 
 
-const userGet = (req, res = response) => {
+const userGet =  async (req, res = response) => {
+const query = { status : true  }
 
-    const {greeting, id , page = 1, limit } = req.query
+const {limit = 5, since = 0 } = req.query 
+const users =   await User.find(query )
+        .skip(Number( since ))
+        .limit(Number( limit ))
 
+    const count = await User.countDocuments( query );
     res.json({
-        msg: 'get API -  controller',
-        greeting,
-        id,
-        page,
-        limit,
+      count,
+      users
     });
 
   }
@@ -23,8 +25,8 @@ const userGet = (req, res = response) => {
   const userPut = async (req, res = response) => {
 
 
-    const id = req.params.id
-    const { password, google, email,  ...rest } = req.body;
+    const id  = req.params.id
+    const { _id, password, google, email,  ...rest } = req.body;
 
     if(password) {
 
@@ -36,10 +38,7 @@ const userGet = (req, res = response) => {
 
     const userUpdate = await User.findByIdAndUpdate ( id , rest )
 
-    res.json({
-        msg: 'put API - controller ',
-        userUpdate
-    });
+    res.json(userUpdate);
   }
   
 const userPost = async ( req, res = response) => {
