@@ -5,6 +5,7 @@ const {userGet,
        userPost,
        userDelete,
        userPatch,
+       userInactive,
   }  = require('../controllers/user') ;
 
 const router = Router ()
@@ -31,7 +32,11 @@ router.post('/', [
   validateFields
 ], userPost ) ;
 
-router.delete('/', userDelete ) ;
+router.delete('/:id', [
+  check('id','Not is a Id validate ').isMongoId(),
+  check('id').custom( existUserForId ),
+  validateFields
+], userInactive ) ;
 
 router.patch('/', userPatch ) ;
 

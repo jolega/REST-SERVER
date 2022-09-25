@@ -10,14 +10,17 @@ const userGet =  async (req, res = response) => {
 const query = { status : true  }
 
 const {limit = 5, since = 0 } = req.query 
-const users =   await User.find(query )
+
+    const [count, users] = await Promise.all([
+      User.countDocuments( query ),
+      User.find(query )
         .skip(Number( since ))
         .limit(Number( limit ))
+    ])
 
-    const count = await User.countDocuments( query );
     res.json({
       count,
-      users
+      users,
     });
 
   }
@@ -64,11 +67,25 @@ const userPost = async ( req, res = response) => {
     });
   }
 
-const userDelete =  (req, res  = response) => {
-    res.json({
-        msg: 'delete API - controller'
+const userDelete = async (req, res  = response) => {
+  const id  = req.params.id
+  const user = await User.findByIdAndDelete ( id ) ;
+  res.json({
+        id,
+        msg: `the record with id ${id}  was deleted`,
+        user
     });
   }
+
+const userInactive = async (req, res  = response) => {
+    const id  = req.params.id
+    const user = await User.findByIdAndUpdate( id, { status : false } ) ;
+    res.json({
+          id,
+          msg: `the record with id ${id}  was inactive`,
+          user
+      });
+    }
 
 const userPatch = (req, res = response) => {
     res.json({
@@ -82,4 +99,5 @@ const userPatch = (req, res = response) => {
     userPost,
     userDelete,
     userPatch,
+    userInactive,
   }
